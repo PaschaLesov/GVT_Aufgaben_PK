@@ -121,7 +121,7 @@ a {
       color: inherit; }
 
 strong, b {
-  color: #3d4449;
+  color: ##84a3269;
   font-weight: 600; }
 
 em, i {
@@ -131,7 +131,7 @@ p {
   margin: 0 0 2em 0; }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #3d4449;
+  color: #84a326;
   font-family: "Roboto Slab", serif;
   font-weight: 700;
   line-height: 1.5;
@@ -1011,7 +1011,7 @@ form {
   margin: 0 0 2em 0; }
 
 label {
-  color: #3d4449;
+  color: #84a326;
   display: block;
   font-size: 0.9em;
   font-weight: 600;
@@ -1139,8 +1139,8 @@ input[type="radio"] {
       width: 2.0625em; }
   input[type="checkbox"]:checked + label:before,
   input[type="radio"]:checked + label:before {
-    background: #3d4449;
-    border-color: #3d4449;
+    background: #84a326;
+    border-color: #84a326;
     color: #ffffff;
     content: '\f00c'; }
   input[type="checkbox"]:focus + label:before,
@@ -2198,7 +2198,7 @@ button,
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  color: #3d4449;
+  color: #84a326;
   font-family: "Roboto Slab", serif;
   font-weight: 400;
   letter-spacing: 0.075em;
