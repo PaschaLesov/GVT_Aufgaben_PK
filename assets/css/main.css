@@ -3103,6 +3103,7 @@ button:disabled,
   
   /* animation: name duration timing-function delay iteration-count direction fill-mode;*/
   animation: run 1s steps(8) infinite;
+  animation-play-state: paused;
 }
 @keyframes run {
   100% {
