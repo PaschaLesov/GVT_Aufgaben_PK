@@ -1,81 +1,249 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>GVT PK</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload">
 
-		<!-- Wrapper -->
-		<div id="wrapper">
+<head>
+	<title>GVT PK</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+</head>
 
-			<!-- Main -->
-				<div id="main">
-					<div class="inner">
+<body class="is-preload">
 
-						<!-- Header -->
-							<!-- <header id="header">
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<!-- <header id="header">
 							</header> -->
 
-						<!-- Banner -->
-							<section id="banner">
-								<div class="content">
-									<header>
-										<h1>Exercise 2 2D Geometrie aus Linien<br /><h1>
-									</header>							
-									<p>45 Minuten</p>												
-									<p>Erstellen Sie eine eigene 2D-Geometrie aus Linien (etwa 30 Vertices) und stellen Sie diese mittels WebGL dar. Dabei können Sie GL_LINES, GL_LINE_STRIP oder GL_LINE_LOOP verwenden.</p>												
-									<p>Sie können die Geometrie auch algorithmisch erzeugen, das bedeutet Sie schreiben Code (for-Schleifen, etc.), die die Vertices generieren (mehr dazu können Sie recherchieren unter dem Stichwort „Procedural Modelling“).</p>												
-									<p>Linienstärke/LineWidth:   Die Linienstärke zu verändern funktioniert manchmal (je nach Version) in einigen Browsern nicht. In der Anlage unter Dateien finden Sie ein Testprogramm, mit dem man feststellen kann, ob der verwendete Browser ein Anpassen der Linienstärke zulässt.</p>																			
-								</div>
-								
-							</section>
-
-						<!-- Section -->
-							
-						<!-- Section -->
-							<section>
-								
-							</section>
-
+				<!-- Banner -->
+				<section id="banner">
+					<div class="content">
+						<header>
+							<h1>Exercise 2 2D Geometrie aus Linien<br />
+								<h1>
+						</header>
+						<p>45 Minuten</p>
+						<p>Erstellen Sie eine eigene 2D-Geometrie aus Linien (etwa 30 Vertices) und stellen Sie diese
+							mittels WebGL dar. Dabei können Sie GL_LINES, GL_LINE_STRIP oder GL_LINE_LOOP verwenden.</p>
+						<p>Sie können die Geometrie auch algorithmisch erzeugen, das bedeutet Sie schreiben Code
+							(for-Schleifen, etc.), die die Vertices generieren (mehr dazu können Sie recherchieren unter
+							dem Stichwort „Procedural Modelling“).</p>
+						<p>Linienstärke/LineWidth: Die Linienstärke zu verändern funktioniert manchmal (je nach Version)
+							in einigen Browsern nicht. In der Anlage unter Dateien finden Sie ein Testprogramm, mit dem
+							man feststellen kann, ob der verwendete Browser ein Anpassen der Linienstärke zulässt.</p>
 					</div>
-				</div>
 
-			<!-- Sidebar -->
-				<div id="sidebar">
-					<div class="inner">			
+				</section>
+				<h1>A Stag</h1>
+				<p>I ended up using 51 vertices and GL_LINE_LOOP.<br>On the right side you can see the reference as well as the map i made to get the needed coordinates.</p>
+				<canvas width="300" height="600" id="my_Canvas"></canvas>
+				<img src="images/stagmap.png" width="300" height="600" alt="" style="max-width: 50%;" />
+				<section>
 
-						<!-- Menu -->
-							<nav id="menu">
-								<header class="major">
-									<h2>Menu</h2>
-								</header>
-								<ul>
-									<li><a href="index.html">Homepage</a></li>
-									<li><a href="aufgabe1.html">Exercise 1</a></li>
-									<li><a href="aufgabe2.html">Exercise 2</a></li>										
-								</ul>
-							</nav>
+				</section>
 
-
-						<!-- Footer -->
-							<footer id="footer">
-								<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. </p>
-							</footer>
-
-					</div>
-				</div>
-
+			</div>
 		</div>
 
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="index.html">Homepage</a></li>
+						<li><a href="aufgabe1.html">Exercise 1</a></li>
+						<li><a href="aufgabe2.html">Exercise 2</a></li>
+					</ul>
+				</nav>
+
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a
+							href="https://unsplash.com">Unsplash</a>. </p>
+				</footer>
+
+			</div>
+		</div>
+
+	</div>
+
 	<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
+	<script>
+		var canvas = document.getElementById('my_Canvas');
+		var gl = canvas.getContext('experimental-webgl');
+
+		var vertices = [
+			//x, y, z
+			0.5, -0.95, 0, //1
+			0.5, -0.85, 0, //2
+			0.3, 0, 0, //3
+			0.6, 0.1, 0, //4--------
+			0.65, 0.22, 0, //5
+			0.3, 0.15, 0, //6
+			0.25, 0.15, 0, //7
+			0.25, 0.2, 0, //8-----
+			0.7, 0.4, 0, //9
+			0.8, 0.6, 0, //10
+			0.6, 0.9, 0, //11
+			0.6, 0.75, 0, //12
+			0.35, 0.9, 0, //13
+			0.7, 0.55, 0, //14------
+			0.7, 0.48, 0, //15
+			0.6, 0.46, 0, //16
+			0.55, 0.52, 0, //17
+			0.55, 0.38, 0, //18
+			0.2, 0.3, 0, //19
+			0.15, 0.35, 0, //20
+			0.11, 0.25, 0, //21
+			0.1, 0.2, 0, //22
+			-0.2, 0.2, 0, //23
+			-0.4, 0.33, 0, //24
+			-0.3, 0.45, 0, //25
+			-0.5, 0.39, 0, //26
+			-0.55, 0.45, 0, //27
+			-0.3, 0.6, 0, //28
+			-0.65, 0.55, 0, //29
+			-0.7, 0.6, 0, //30
+			-0.2, 0.95, 0, //31
+			-0.45, 0.87, 0, //32
+			-0.45, 0.97, 0, //33
+			-0.5, 0.97, 0, //34
+			-0.8, 0.63, 0, //35
+			-0.8, 0.52, 0, //36
+			-0.35, 0.17, 0, //37
+			-0.37, 0.14, 0, //38
+			-0.4, 0.19, 0, //39
+			-0.65, 0.3, 0, //40
+			-0.7, 0.3, 0, //41
+			-0.7, 0.1, 0, //42
+			-0.54, 0.07, 0, //43
+			-0.4, 0, 0, //44
+			-0.7, -0.15, 0, //45
+			-0.7, -0.25, 0, //46
+			-0.6, -0.27, 0, //47
+			-0.33, -0.27, 0, //48
+			-0.37, -0.45, 0, //49
+			-0.6, -0.65, 0, //50
+			-0.4, -0.95, 0, //51
+			// 0.5, -0.95, 0, //52
+
+
+		]
+
+		// Create an empty buffer object
+		var vertex_buffer = gl.createBuffer();
+
+		// Bind appropriate array buffer to it
+		gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+
+		// Pass the vertex data to the buffer
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+		// Unbind the buffer
+		gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+		/*=================== Shaders ====================*/
+
+		// Vertex shader source code
+		var vertCode =
+			'attribute vec3 coordinates;' +
+			'void main(void) {' +
+			' gl_Position = vec4(coordinates, 1.0);' +
+			'}';
+
+		// Create a vertex shader object
+		var vertShader = gl.createShader(gl.VERTEX_SHADER);
+
+
+		// Attach vertex shader source code
+		gl.shaderSource(vertShader, vertCode);
+
+		// Compile the vertex shader
+		gl.compileShader(vertShader);
+
+		// Fragment shader source code  - color of the line
+		var fragCode =
+			'void main(void) {' +
+			'gl_FragColor = vec4(0.36, 0.36, 0.36, 1);' +
+			'}';
+
+		// Create fragment shader object
+		var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+
+		// Attach fragment shader source code
+		gl.shaderSource(fragShader, fragCode);
+
+		// Compile the fragmentt shader
+		gl.compileShader(fragShader);
+
+		// Create a shader program object to store
+		// the combined shader program
+		var shaderProgram = gl.createProgram();
+
+		// Attach a vertex shader
+		gl.attachShader(shaderProgram, vertShader);
+
+		// Attach a fragment shader
+		gl.attachShader(shaderProgram, fragShader);
+
+		// Link both the programs
+		gl.linkProgram(shaderProgram);
+
+		// Use the combined shader program object
+		gl.useProgram(shaderProgram);
+
+		/*======= Associating shaders to buffer objects ======*/
+
+		// Bind vertex buffer object
+		gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+
+		// Get the attribute location
+		var coord = gl.getAttribLocation(shaderProgram, "coordinates");
+
+		// Point an attribute to the currently bound VBO
+		gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+
+		// Enable the attribute
+		gl.enableVertexAttribArray(coord);
+
+		/*============ Drawing the triangle =============*/
+
+		// Clear the canvas
+		gl.clearColor(1, 1, 1, 1);
+
+		// Enable the depth test
+		gl.enable(gl.DEPTH_TEST);
+
+		// Clear the color and depth buffer
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+		// Set the view port
+		gl.viewport(0, 0, canvas.width, canvas.height);
+
+		// draw connecting lines - only the first two elements of the array
+		gl.drawArrays(gl.LINE_LOOP, 0, 51);
+
+		// POINTS, LINE_STRIP, LINE_LOOP, LINES,
+		// TRIANGLE_STRIP,TRIANGLE_FAN, TRIANGLES
+	</script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
 
 </body>
+
 </html>
