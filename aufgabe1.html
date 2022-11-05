@@ -1,172 +1,198 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>GVT PK</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<script>
-		const images = [
-		  "images/0.png",
-		  "images/1.png",
-		  "images/2.png",
-		  "images/3.png",
-		  "images/4.png",
-		  "images/5.png",
-		  "images/6.png",
-		  "images/7.png",
-		  "images/8.png",
-		  "images/9.png",
-		  "images/10.png",
-		  "images/11.png",
-		  "images/12.png",
-		  "images/13.png",
-		  "images/14.png",
-		  "images/15.png",
-		  "images/16.png",
-		  "images/17.png",
-		  "images/18.png",
-		  "images/19.png",
-		  "images/20.png",
-		  "images/21.png",
-		  "images/22.png"
-		];
-	
-		var index = 0;
-	
-		// 76 = 'l' key
-		document.addEventListener("keydown", function (event) {
-		  if (event.keyCode == 76) {
+
+<head>
+	<title>GVT PK</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<script>
+	const images = [
+		"images/0.png",
+		"images/1.png",
+		"images/2.png",
+		"images/3.png",
+		"images/4.png",
+		"images/5.png",
+		"images/6.png",
+		"images/7.png",
+		"images/8.png",
+		"images/9.png",
+		"images/10.png",
+		"images/11.png",
+		"images/12.png",
+		"images/13.png",
+		"images/14.png",
+		"images/15.png",
+		"images/16.png",
+		"images/17.png",
+		"images/18.png",
+		"images/19.png",
+		"images/20.png",
+		"images/21.png",
+		"images/22.png"
+	];
+
+	var index = 0;
+
+	// 76 = 'l' key
+	document.addEventListener("keydown", function (event) {
+		if (event.keyCode == 76) {
 			if (index == 0) {
-			  index = 21;
-			  console.log(index);
+				index = 21;
+				console.log(index);
 			} else {
-			  index--;
-			  console.log(index);
+				index--;
+				console.log(index);
 			}
 			document.getElementById("images").src = images[index];
 			console.log("L.");
-		  }
-		});
-	
-		// 82 = 'r' key
-		document.addEventListener("keydown", function (event) {
-		  if (event.keyCode == 82) {
+		}
+	});
+
+	// 82 = 'r' key
+	document.addEventListener("keydown", function (event) {
+		if (event.keyCode == 82) {
 			if (index == 21) {
-			  index = 0;
-			  console.log(index);
+				index = 0;
+				console.log(index);
 			} else {
-			  index++;
-			  console.log(index);
+				index++;
+				console.log(index);
 			}
 			document.getElementById("images").src = images[index];
 			console.log("R.");
-		  }
-		});
+		}
+	});
 
-		//initial state paused
-		//on a uneven click start
-		// on a even - pause
-		var numberOfA = 0;
-		document.addEventListener("keydown", function (event) {
-			numberOfA++;
-		  if (event.keyCode == 65) {
-			if (numberOfA %2 > 0) {
+	//initial state paused
+	//on a uneven click start
+	// on a even - pause
+	var numberOfA = 0;
+	document.addEventListener("keydown", function (event) {
+		numberOfA++;
+		if (event.keyCode == 65) {
+			if (numberOfA % 2 > 0) {
 				document.querySelector(".bunny").style.animationPlayState = 'running';
-			  console.log('start');
+				console.log('start');
 			} else {
 				document.querySelector(".bunny").style.animationPlayState = 'paused';
-			  console.log('pause');
+				console.log('pause');
 			}
-			
-		  }
-		});
 
-	  </script>
-	<body class="is-preload">
+		}
+	});
+</script>
 
-		<!-- Wrapper -->
-		<div id="wrapper">
+<body class="is-preload">
 
-			<!-- Main -->
-				<div id="main">
-					<div class="inner">
+	<!-- Wrapper -->
+	<div id="wrapper">
 
-						<!-- Header -->
-							<!-- <header id="header">
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<!-- <header id="header">
 							</header> -->
 
-						<!-- Banner -->
-						<section id="banner">
-							<div class="content">
-								<header>
-									<h1>Exercise 1 + Bonus<br /><h1>
-								</header>
-									<p>Bearbeitungszeit: 30-90 Minuten (+30 Minuten für Erweiterung)</p>
-									
-									<p>Aufgabenstellung: Implementieren Sie eine sich drehende 2D-Scheibe aus Einzelbildern, welche Sie mit JavaScript laden und in einem <img> Image-Element zeigen (nicht im Canvas). Die Einzelbilder sollen, ähnlich wie bei einer Sprite-Sheet-Animation ode einem Animationsfilm, so ausgetauscht und eingeblendet werden, dass visuell der Eindruck einer Rotation entsteht. Auf jedem Einzelbild ist ein Rotationszustand der Scheibe zu sehen, z. B.: 0°, 15°, 30°,...  </p>
-									
-									<p>Es ist Ihnen überlassen, ob sie die Bilder auf mehrere Dateien verteilen, oder alle Bilder der Animation als Sprite-Sheet also in einer Datei anordnen.</p>
-									
-									<p>Interaktion : Auf den Tastendruck 'l' oder 'r' soll sich die Scheibe augenscheinlich ein Stück nach links beziehungsweise nach rechts drehen. Zum Drehen muss man wiederholt drücken (mit l und r soll es nur also einen Schritt/ ein Bild weiter gehen.).</p>
-									
-									<p>Hinweise: Sie können über die css Eigenschaften clip, backgroundPosition und andere, einen Bildausschnitt wählen, z. B. clip: rect(10px, 20px, 30px, 40px);. </p>
-								
-							</div>
-							
-						</section>
-						<section>
-							<h3>Spin that record. Press the 'R' or 'L' key!</h3>
-							<p>I created an array of pictures and added 2 event listeners for the R and L key.<br>Each time the button is pressed the array index will be either incremented or decremented.<br>The images used are under creative common license and can be found at <a href="www.pexels.com" target="_blank">www.pexels.com</a></p>
-							<img src="images/0.png" id="images" width="595" height="471" />
-						</section>
-						<section>
-							<p>Außer einer Scheibe kreieren und animieren Sie noch ein anderes Objekt Ihrer Wahl als Sprite-Sheet, z. B. einen hüpfenden Hasen.</p>
-							<p>Die Scheibe dreht sich automatisch mit Taste "a", dazu muss diese kontinuierlich animiert werden (die Animation sollte bei einem weiteren Drücken von "a" auch wieder angehalten werden).</p>
-						</section>
-						<section>	
-							<h3>Make the bunny run and stop it by pressing the 'А' key!</h3>
-							<p>This time i used spritesheet which i had to make from separate bunny PNGs.<br>I created the animation in CSS by using keyframes.<br>I then added an EventListener for the A key and also a counter for the number of 'A's pressed.<br>Depending if the counter is an even or uneven number the state of animation-play-state toggles between 'running' and 'paused'.<br>The images used are under creative common license and can be found at <a href="www.freepik.com" target="_blank">www.freepik.com</a></p>
-						<div class="bunny"></div>
-						</section>
+				<!-- Banner -->
+				<section id="banner">
+					<div class="content">
+						<header>
+							<h1>Exercise 1 + Bonus<br />
+								<h1>
+						</header>
+						<p>Bearbeitungszeit: 30-90 Minuten (+30 Minuten für Erweiterung)</p>
+
+						<p>Aufgabenstellung: Implementieren Sie eine sich drehende 2D-Scheibe aus Einzelbildern, welche
+							Sie mit JavaScript laden und in einem <img> Image-Element zeigen (nicht im Canvas). Die
+							Einzelbilder sollen, ähnlich wie bei einer Sprite-Sheet-Animation ode einem Animationsfilm,
+							so ausgetauscht und eingeblendet werden, dass visuell der Eindruck einer Rotation entsteht.
+							Auf jedem Einzelbild ist ein Rotationszustand der Scheibe zu sehen, z. B.: 0°, 15°, 30°,...
+						</p>
+
+						<p>Es ist Ihnen überlassen, ob sie die Bilder auf mehrere Dateien verteilen, oder alle Bilder
+							der Animation als Sprite-Sheet also in einer Datei anordnen.</p>
+
+						<p>Interaktion : Auf den Tastendruck 'l' oder 'r' soll sich die Scheibe augenscheinlich ein
+							Stück nach links beziehungsweise nach rechts drehen. Zum Drehen muss man wiederholt drücken
+							(mit l und r soll es nur also einen Schritt/ ein Bild weiter gehen.).</p>
+
+						<p>Hinweise: Sie können über die css Eigenschaften clip, backgroundPosition und andere, einen
+							Bildausschnitt wählen, z. B. clip: rect(10px, 20px, 30px, 40px);. </p>
 
 					</div>
-				</div>
 
-			<!-- Sidebar -->
-				<div id="sidebar">
-					<div class="inner">			
+				</section>
+				<section>
+					<h3>Spin that record. Press the 'R' or 'L' key!</h3>
+					<p>I created an array of pictures and added 2 event listeners for the R and L key.<br>Each time the
+						button is pressed the array index will be either incremented or decremented.<br>The images used
+						are under creative common license and can be found at <a href="www.pexels.com"
+							target="_blank">www.pexels.com</a></p>
+					<img src="images/0.png" id="images" width="595" height="471" />
+				</section>
+				<section>
+					<p>Außer einer Scheibe kreieren und animieren Sie noch ein anderes Objekt Ihrer Wahl als
+						Sprite-Sheet, z. B. einen hüpfenden Hasen.</p>
+					<p>Die Scheibe dreht sich automatisch mit Taste "a", dazu muss diese kontinuierlich animiert werden
+						(die Animation sollte bei einem weiteren Drücken von "a" auch wieder angehalten werden).</p>
+				</section>
+				<section>
+					<h3>Make the bunny run and stop it by pressing the 'А' key!</h3>
+					<p>This time i used spritesheet which i had to make from separate bunny PNGs.<br>I created the
+						animation in CSS by using keyframes.<br>I then added an EventListener for the A key and also a
+						counter for the number of 'A's pressed.<br>Depending if the counter is an even or uneven number
+						the state of animation-play-state toggles between 'running' and 'paused'.<br>The images used are
+						under creative common license and can be found at <a href="www.freepik.com"
+							target="_blank">www.freepik.com</a></p>
+					<div class="bunny"></div>
+				</section>
 
-						<!-- Menu -->
-							<nav id="menu">
-								<header class="major">
-									<h2>Menu</h2>
-								</header>
-								<ul>
-									<li><a href="index.html">Homepage</a></li>
-									<li><a href="aufgabe1.html">Exercise 1</a></li>
-									<li><a href="aufgabe2.html">Exercise 2</a></li>										
-								</ul>
-							</nav>
-
-
-						<!-- Footer -->
-							<footer id="footer">
-								<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. </p>
-							</footer>
-
-					</div>
-				</div>
-
+			</div>
 		</div>
 
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="index.html">Homepage</a></li>
+						<li><a href="aufgabe1.html">Exercise 1</a></li>
+						<li><a href="aufgabe2.html">Exercise 2</a></li>
+						<li><a href="aufgabe3.html">Exercise 3</a></li>
+						<li><a href="aufgabe4.html">Exercise 4</a></li>
+						<li><a href="aufgabe5.html">Exercise 5</a></li>
+					</ul>
+				</nav>
+
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a
+							href="https://unsplash.com">Unsplash</a>. </p>
+				</footer>
+
+			</div>
+		</div>
+
+	</div>
+
 	<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
 
 </body>
-</html>
+
+</html>3
