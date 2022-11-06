@@ -78,181 +78,221 @@
 
 	<!-- Scripts -->
 
+
 	<script>
+		/*============= Creating a canvas ==================*/
 		var canvas = document.getElementById('my_Canvas');
-		var gl = canvas.getContext('experimental-webgl');
+		gl = canvas.getContext('experimental-webgl');
+
+		/*========== Defining and storing the geometry ==========*/
 
 		var vertices = [
 			//x, y, z
-			-0.45, -1, 0, //1
-			-0.8, -0.8, 0,
-			-0.65, -1, 0,
 
+			//1
+			-0.45, -1, 0, //0
+			-0.65, -1, 0, //1
 			-0.8, -0.8, 0, //2
-			-0.6, -0.92, 0,
-			-0.6, -0.72, 0,
 
-			-0.6, -0.72, 0, //3
-			-0.8, -0.8, 0,
-			-0.8, -0.42, 0,
 
+
+			//2
+			-0.6, -0.92, 0, //3
 			-0.6, -0.72, 0, //4
-			-0.37, -0.48, 0,
-			-0.8, -0.42, 0,
 
-			-0.35, -0.35, 0, //5
-			-0.37, -0.48, 0,
-			-0.8, -0.42, 0,
 
-			-0.35, -0.35, 0, //6
-			-0.8, -0.1, 0,
-			-0.8, -0.42, 0,
+			//3
+			-0.8, -0.42, 0, //5
 
+
+			//4
+			-0.37, -0.48, 0, //6
+
+
+			//5
 			-0.35, -0.35, 0, //7
-			-0.8, -0.1, 0,
-			-0.4, 0, 0,
 
-			-0.7, 0.2, 0, //8
-			-0.8, -0.1, 0,
-			-0.4, 0, 0,
 
-			-0.7, 0.2, 0, //9
-			-0.8, -0.1, 0,
-			-1, -0.05, 0,
+			//6
+			-0.8, -0.1, 0, //8
 
-			-1, -0.26, 0, //10
-			-0.8, -0.1, 0,
-			-1, -0.05, 0,
 
-			-1, -0.26, 0, //11
-			-0.8, -0.1, 0,
-			-0.9, -0.34, 0,
+			//7
+			-0.4, 0, 0, //9
 
-			-0.7, 0.2, 0, //12
-			-0.8, -0.1, 0,
-			0.1, 0.2, 0,
+			//8
+			-0.7, 0.2, 0, //10
 
-			0.45, -0.1, 0, //13
-			-0.8, -0.1, 0,
-			0.1, 0.2, 0,
+			//9
+			-1, -0.05, 0, //11
 
-			0.45, -0.1, 0, //14
-			-0.8, -0.1, 0,
-			0.2, -0.4, 0,
+			//10
+			-1, -0.26, 0, //12
 
-			-0.35, -0.35, 0, //15
-			-0.8, -0.1, 0,
-			0.2, -0.4, 0,
+			//11
+			-0.9, -0.34, 0, //13
 
-			0.45, -0.1, 0, //16
-			0.55, -0.45, 0,
-			0.2, -0.4, 0,
+			//12
+			0.1, 0.2, 0, //14
 
-			0.31, -0.7, 0, //17
-			0.55, -0.45, 0,
-			0.2, -0.4, 0,
+			//13
+			0.45, -0.1, 0, //15
 
+			//14
+			0.2, -0.4, 0, //16
+
+			//15
+			//already there
+
+			//16
+			0.55, -0.45, 0, //17
+
+			//17
 			0.31, -0.7, 0, //18
-			0.55, -0.45, 0,
-			0.6, -0.8, 0,
 
-			0.31, -0.7, 0, //19
-			0.4, -0.85, 0,
-			0.6, -0.8, 0,
+			//18
+			0.6, -0.8, 0, //19
 
-			0.57, -0.95, 0, //20
-			0.4, -0.85, 0,
-			0.6, -0.8, 0,
+			//19
+			0.4, -0.85, 0, //20
 
-			0.4, -1, 0, //21
-			0.4, -0.85, 0,
-			0.7, -1., 0,
+			//20
+			0.57, -0.95, 0, //21
 
-			0.45, -0.1, 0, //22
-			0.55, -0.45, 0,
-			0.84, -0.17, 0,
+			//21		
+			0.7, -1., 0, //22
+			0.4, -1, 0, //23
 
-			0.45, -0.1, 0, //23
-			0.9, 0.2, 0,
-			0.84, -0.17, 0,
+			//22
+			0.84, -0.17, 0, //24
 
-			0.45, -0.1, 0, //24
-			0.9, 0.2, 0,
-			0.65, 0.45, 0,
+			//23
+			0.9, 0.2, 0, //25
 
-			0.45, -0.1, 0, //25
-			0.38, 0.18, 0,
-			0.65, 0.45, 0,
+			//24
+			0.65, 0.45, 0, //26
 
-			0.45, -0.1, 0, //26
-			0.38, 0.18, 0,
-			0.1, 0.2, 0,
+			//25
+			0.38, 0.18, 0, //27
 
-			0.4, 0.2, 0, //27
-			0.82, 0.62, 0,
-			0.4, 0.81, 0,
+			//26
+			//already there
 
-			0.65, 0.45, 0, //28
-			0.82, 0.62, 0,
-			0.82, 0.28, 0,
+			//27
+			0.4, 0.2, 0, //28
+			0.4, 0.81, 0, //29
+			0.82, 0.62, 0, //30
+			
 
-			0.85, 0.8, 0, //29
-			0.82, 0.62, 0,
-			0.4, 0.81, 0,
+			//28
+			0.82, 0.28, 0, //31
 
-			0.85, 0.8, 0, //30
-			0.82, 0.62, 0,
-			1, 0.7, 0,
+			//29
+			0.85, 0.8, 0, //32
 
-			0.85, 0.8, 0, //31
-			1, 0.75, 0,
-			1, 0.7, 0,
+			//30
+			1, 0.7, 0, //33
 
-			0.7, 0.8, 0, //32
-			0.6, 0.9, 0,
-			0.4, 0.81, 0,
+			//31
+			1, 0.75, 0, //34
 
-			0.7, 0.8, 0, //33
-			0.6, 0.9, 0,
-			0.85, 0.85, 0,
+			//32
+			0.6, 0.9, 0, //35
+			0.7, 0.8, 0, //36
+		
 
-			0.7, 0.8, 0, //34
-			0.85, 0.8, 0,
-			0.85, 0.85, 0,
+			//33
+			0.85, 0.85, 0, //37
 
-			0.6, 1, 0, //35
-			0.6, 0.9, 0,
-			0.4, 0.81, 0,
+			//34
+			//blank - all points are given
+
+			//35
+			0.6, 1, 0, //38
+
+		];
+
+		var colors = [0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, ];
+
+		var indices = [
+			0, 2, 1,
+			2, 3, 4,
+			2, 4, 5,
+			4, 5, 6,
+			5, 6, 7,
+			5, 7, 8,
+			7, 8, 9,
+			8, 9, 10,
+			8, 10, 11,
+			8, 11, 12,
+			8, 12, 13,
+			9, 10, 14,
+			9, 14, 15,
+			9, 15, 16,
+			7, 9, 16,
+			15, 16, 17,
+			16, 17, 18,
+			17, 18, 19,
+			18, 19, 20,
+			19, 20, 21,
+			20, 22, 23,
+			15,17,24,
+			15,24,25,
+			15,25,26,
+			15,26,27,
+			15,27,14,
+			28,29,30,
+			26,30,31,
+			29,30,32,
+			32,30,33,
+			32,34,33,
+			29,35,36,
+			35,36,37,
+			36,37,32,
+			29,35,38
+
+			
 
 
 
 
-		]
 
-		// Create an empty buffer object
+
+
+
+
+		];
+
+		// Create an empty buffer object and store vertex data
 		var vertex_buffer = gl.createBuffer();
-
-		// Bind appropriate array buffer to it
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-
-		// Pass the vertex data to the buffer
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
-		// Unbind the buffer
 		gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-		/*=================== Shaders ====================*/
+		// Create an empty buffer object and store Index data
+		var Index_Buffer = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
-		// Vertex shader source code
-		var vertCode =
-			'attribute vec3 coordinates;' +
+		// Create an empty buffer object and store color data
+		var color_buffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+		/*======================= Shaders =======================*/
+
+		// vertex shader source code
+		var vertCode = 'attribute vec3 coordinates;' +
+			'attribute vec3 color;' +
+			'varying vec3 vColor;' +
 			'void main(void) {' +
 			' gl_Position = vec4(coordinates, 1.0);' +
+			'vColor = color;' +
 			'}';
 
 		// Create a vertex shader object
 		var vertShader = gl.createShader(gl.VERTEX_SHADER);
-
 
 		// Attach vertex shader source code
 		gl.shaderSource(vertShader, vertCode);
@@ -260,10 +300,12 @@
 		// Compile the vertex shader
 		gl.compileShader(vertShader);
 
-		// Fragment shader source code  - color of the line
-		var fragCode =
+
+		// fragment shader source code
+		var fragCode = 'precision mediump float;' +
+			'varying vec3 vColor;' +
 			'void main(void) {' +
-			'gl_FragColor = vec4(0.36, 0.36, 0.36, 1);' +
+			'gl_FragColor = vec4(vColor, 1.);' +
 			'}';
 
 		// Create fragment shader object
@@ -275,8 +317,8 @@
 		// Compile the fragmentt shader
 		gl.compileShader(fragShader);
 
-		// Create a shader program object to store
-		// the combined shader program
+		// Create a shader program object to
+		// store the combined shader program
 		var shaderProgram = gl.createProgram();
 
 		// Attach a vertex shader
@@ -291,39 +333,51 @@
 		// Use the combined shader program object
 		gl.useProgram(shaderProgram);
 
-		/*======= Associating shaders to buffer objects ======*/
+		/* ======== Associating shaders to buffer objects =======*/
 
 		// Bind vertex buffer object
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
+		// Bind index buffer object
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
+
 		// Get the attribute location
 		var coord = gl.getAttribLocation(shaderProgram, "coordinates");
 
-		// Point an attribute to the currently bound VBO
+		// point an attribute to the currently bound VBO
 		gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
 
 		// Enable the attribute
 		gl.enableVertexAttribArray(coord);
 
-		/*============ Drawing the triangle =============*/
+		// bind the color buffer
+		gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+
+		// get the attribute location
+		var color = gl.getAttribLocation(shaderProgram, "color");
+
+		// point attribute to the volor buffer object
+		gl.vertexAttribPointer(color, 3, gl.FLOAT, false, 0, 0);
+
+		// enable the color attribute
+		gl.enableVertexAttribArray(color);
+
+		/*============Drawing the Quad====================*/
 
 		// Clear the canvas
-		gl.clearColor(1, 1, 1, 1);
+		gl.clearColor(0.5, 0.5, 0.5, 0.9);
 
 		// Enable the depth test
 		gl.enable(gl.DEPTH_TEST);
 
-		// Clear the color and depth buffer
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		// Clear the color buffer bit
+		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		// Set the view port
 		gl.viewport(0, 0, canvas.width, canvas.height);
 
-		// draw the triangles
-		gl.drawArrays(gl.TRIANGLES, 0, 115);
-
-		// POINTS, LINE_STRIP, LINE_LOOP, LINES,
-		// TRIANGLE_STRIP,TRIANGLE_FAN, TRIANGLES
+		//Draw the triangle
+		gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
 	</script>
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/browser.min.js"></script>
