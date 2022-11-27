@@ -2,8 +2,8 @@
 var plane = ( function() {
 
 	function createVertexData() {
-		var n = 100;
-		var m = 100;
+		var n = 50;
+		var m = 50;
 
 		// Positions.
 		this.vertices = new Float32Array(3 * (n + 1) * (m + 1));

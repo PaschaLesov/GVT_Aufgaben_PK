@@ -1,8 +1,8 @@
 var torus = ( function() {
 
 	function createVertexData() {
-		var n = 16;
-		var m = 32;
+		var n = 50;
+		var m = 50;
 
 		// Positions.
 		this.vertices = new Float32Array(3 * (n + 1) * (m + 1));
@@ -18,7 +18,7 @@ var torus = ( function() {
 
 		var du = 2 * Math.PI / n;
 		var dv = 2 * Math.PI / m;
-		var r = 0.3;
+		var r = 0.2;
 		var R = 0.5;
 		// Counter for entries in index array.
 		var iLines = 0;

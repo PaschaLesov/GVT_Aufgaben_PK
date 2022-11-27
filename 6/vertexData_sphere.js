@@ -1,8 +1,8 @@
 var sphere = ( function() {
 
 	function createVertexData() {
-		var n = 32;
-		var m = 32;
+		var n = 50;
+		var m = 50;
 
 		// Positions.
 		this.vertices = new Float32Array(3 * (n + 1) * (m + 1));
