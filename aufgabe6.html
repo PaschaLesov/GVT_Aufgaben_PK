@@ -7,24 +7,28 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 
-	<script type="text/javascript" src="5/gl-matrix.js"></script>
-	<script type="text/javascript" src="5/vertexData_cone.js"></script>
-	<script type="text/javascript" src="5/vertexData_icosphere.js"></script>
-	<script type="text/javascript" src="5/app.js"></script>
+	<script type="text/javascript" src="6/gl-matrix.js"></script>
+	<script type="text/javascript" src="6/vertexData_plane.js"></script>
+	<script type="text/javascript" src="6/vertexData_sphere.js"></script>
+	<script type="text/javascript" src="6/vertexData_torus.js"></script>
+	<script type="text/javascript" src="6/app.js"></script>
 	<script type="x-shader/x-vertex" id="vertexshader">
 		attribute vec3 aPosition;
 		attribute vec3 aNormal;
 
 		uniform mat4 uPMatrix;
 		uniform mat4 uMVMatrix;
+		uniform mat3 uNMatrix;
+		uniform vec4 uColor;
 
 		varying vec4 vColor;
 
 		void main(){
 			gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+			vec3 tNormal = uNMatrix * aNormal;
 
-			vColor = vec4(aNormal.x, aNormal.y, aNormal.z, 1.0);
-			vColor = (vColor + 1.0) / 2.0;
+			vColor = vec4(tNormal.x, tNormal.y, tNormal.z, 1.0);
+			vColor = uColor * (vColor + 1.0) / 2.0;
 		}
 	</script>
 	<script type="x-shader/x-fragment" id="fragmentshader">
@@ -54,33 +58,11 @@
 				<section id="banner">
 					<div class="content">
 						<header>
-							<h1>Exercise 5 Kamerabewegung<br />
+							<h1>Exercise 6 Objekte bewegen - fliegende Kugeln<br />
 								<h1>
 						</header>
-						<p>Teil 1: Erstellen Sie eine Szene aus mindestens zwei Grundkörpern oder parametrisierten
-							Flächen. Sie soll interaktiv von allen Seiten einsehbar sein, siehe Interaktion.
-
-							<br>Teil 2: Erstellen Sie ein rekursives Kugel-Modell, wie in Lerneinheit GRU beschrieben.
-							Die Tiefe der Rekursion soll direkt von der Webseite aus interaktiv einstellbar sein. Es
-							hilft zunächst einen Oktaeder zu bauen und auf diesen aufbauend die Dreiecksteilung
-							vorzunehmen. Kolorieren Sie das Modell. Die Linien dabei sollen zusätzlich sichtbar sein,
-							oder es besteht die Möglichkeit zwischen Linien und Füllung umzuschalten. Sie können die
-							Kugel in die Szene aus Teil 1 der Aufgabe integrieren.</p>
-						<p><strong>Interaktion:</strong> Die Bewegung der „kreisenden“ Kamera erfolgt über die
-							Pfeiltasten auf einer
-							Kreisbahn um die Szene. Mittels der Taste N (und Shift-N) kann man den Radius der Bewegung
-							verändern. Zusätzlich lässt sich die Kamera über die Tasten WASD in XY-Richtung bewegen. Zur
-							Einstellung der Rekursionstiefe für die Kugel erstellen Sie ein kleines Widget oder zwei
-							Buttons mit plus und minus.<br>
-
-							<strong>Hinweis:</strong> Sie können zum Bewegen der Kamera die View-Transformation nutzen.
-							Diese berechnen
-							Sie mittels der lookAt Funktion. Dabei lässt ich die Position der Kamera (Eye) interaktiv in
-							der Szene bewegen. Achten Sie darauf, dass auch der Up-Vektor richtig eingestellt wird
-							(senkrecht zum Objektiv der virtuellen Kamera).<br>
-
-							Die Kamera kreist in der XZ-Ebene. Sie können Y unabhängig von der camera.distance
-							variieren. Wenn sie X verändern, sollten Sie die camera.distance neu berechnen.</p>
+						<p><strong>Aufgabenstellung:</strong> Lassen Sie die vier Kugeln aus dem Beispielprogramm aus der Lerneinheit TFM interaktiv durch den Torus fliegen.<br>Dabei bewegen sich die Kugeln kontinuierlich auf Kreisbahnen so, dass sie sich nie berühren.</p>
+						<p><strong>Interaktion:</strong>Beim jedem Drücken der Taste k (Sie können auch einen Button nutzen) sollen sich alle Kugeln ein Stück weiter bewegen oder die Bewegung erfolgt automatisch und kann ein- und ausgeschaltet werden.</p>
 					</div>
 
 				</section>
