@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>GVT PK</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<script type="text/javascript" src="7/gl-matrix.js"></script>
+	<script type="text/javascript" src="7/vertexData_plane.js"></script>
+	<script type="text/javascript" src="7/vertexData_sphere.js"></script>
+	<script type="text/javascript" src="7/vertexData_cylinder.js"></script>
+	<script type="text/javascript" src="7/vertexData_cone.js"></script>
+	<script type="text/javascript" src="7/vertexData_torus.js"></script>
+	<script type="text/javascript" src="7/app.js"></script>
+	<script type="x-shader/x-vertex" id="vertexshader">
+		attribute vec3 aPosition;
+		attribute vec3 aNormal;
+
+		uniform mat4 uPMatrix;
+		uniform mat4 uMVMatrix;
+		uniform mat3 uNMatrix;
+		uniform vec4 uColor;
+
+		varying vec4 vColor;
+
+		void main(){
+			gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+			vec3 tNormal = uNMatrix * aNormal;
+
+			vColor = uColor;
+		}
+	</script>
+	<script type="x-shader/x-fragment" id="fragmentshader">
+		precision mediump float;
+		varying vec4 vColor;
+
+		void main() {
+			gl_FragColor = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1);
+		}
+	</script>
+</head>
+
+<body onload="app.start()">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<!-- <header id="header">
+							</header> -->
+
+				<!-- Banner -->
+				<section id="banner">
+					<div class="content">
+						<header>
+							<h1>Exercise 7 Z-Buffer Visualisierung<br /></h1>
+						</header>
+						<p><strong>Aufgabenstellung:</strong> Erstellen Sie eine Szene aus mindestens drei Grundkörpern
+							die sich gegenseitig überschneiden, die Körper sollen also Schnittvolumen bilden. Stellen
+							Sie den Tiefenbuffer (Z-Buffer), das heißt die Z-Werte der Fragments im Framebuffer, als
+							Graustufen da. Die Fragments, die in Z-Richtung näher an der Kamera sind, sollen dunkler
+							dargestellt werden. In der Szene soll möglichst viel Tiefe erzeugt werden, so dass der
+							Effekt deutlich wird.
+							<p><strong>Interaktion:</strong> Bewegung der Kamera über die Pfeiltasten (oder über die
+								Tasten WASD).</p>
+					</div>
+				</section>
+				<section>
+					<h1>Press "R" to make the spheres go inside of the donut.</h1>
+				</section>
+				<div class="five">
+					<div class="exercise5left">
+						<canvas id="canvas" width="500" height="500"></canvas>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="index.html">Homepage</a></li>
+						<li><a href="aufgabe1.html">Exercise 1</a></li>
+						<li><a href="aufgabe2.html">Exercise 2</a></li>
+						<li><a href="aufgabe3.html">Exercise 3</a></li>
+						<li><a href="aufgabe4.html">Exercise 4</a></li>
+						<li><a href="aufgabe5.html">Exercise 5</a></li>
+						<li><a href="aufgabe6.html">Exercise 6</a></li>
+						<li><a href="aufgabe7.html">Exercise 7</a></li>
+					</ul>
+				</nav>
+
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a
+							href="https://unsplash.com">Unsplash</a>. </p>
+				</footer>
+
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script>
+
+	</script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
