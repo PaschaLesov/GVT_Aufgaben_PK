@@ -13,14 +13,14 @@ var app = (function () {
 	var interactiveModel;
 	var camera = {
 		// Initial position of the camera.
-		eye: [0, 1, 4],
+		eye: [0, 1.2, 0],
 		// Point to look at.
-		center: [0, 0, 0],
+		center: [0, 1, 0],
 		// Roll and pitch of the camera.
 		up: [0, 1, 0],
 		// Opening angle given in radian.
 		// radian = degree*2*PI/360.
-		fovy: 60.0 * Math.PI / 180,
+		fovy: 80.0 * Math.PI / 180,
 		// Camera near plane dimensions:
 		// value for left right top bottom in projection.
 		lrtb: 2.0,
@@ -65,7 +65,7 @@ var app = (function () {
 	 * be in render function.
 	 */
 	function initPipline() {
-		gl.clearColor(0, 0, 0, 0.5);
+		gl.clearColor(0.04, 0.62, 0.60, 1);
 
 		// Backface culling.
 		gl.frontFace(gl.CCW);
@@ -134,20 +134,22 @@ var app = (function () {
 	function initModels() {
 		// fillstyle
 		var fs = "fill";
-		createModel("plane", "wireframe", [1, 1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		//plane
+		createModel("plane", "fill", [1, 1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
 
-		createModel("ball", fs, [1, 1, 1, 1], [0.2, 0.5, 0], [0, 0, 0], [1, 1, 1]);
-		createModel("ball", fs, [1, 1, 1, 1], [0.2, 1.3, 0], [0, 0, 0], [0.6, 0.6, 0.6]);
-		createModel("ball", fs, [1, 1, 1, 1], [0.2, 1.8, 0], [0, 0, 0], [0.3, 0.3, 0.3]);
+		//body out of 3 balls
+		createModel("ball", fs, [1, 1, 1, 1], [0, 0.5, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("ball", fs, [1, 1, 1, 1], [0, 1.3, 0], [0, 0, 0], [0.6, 0.6, 0.6]);
+		createModel("ball", fs, [1, 1, 1, 1], [0, 1.8, 0], [0, 0, 0], [0.3, 0.3, 0.3]);
 
+		//hat out of torus and cylinder
+		createModel("torus", fs, [1, 1, 1, 1], [0, 1.9, 0], [0, 0, 0], [.3, .3, .3]);
+		createModel("cylinder", fs, [1, 1, 1, 1], [0, 1.4, 0], [0, 0, 0], [3.2, 0.5, 3.2]);
 
+		//arms
+		createModel("cylinder", fs, [1, 1, 1, 1], [0, 1.4, 0], [1, 0, 1], [1, 0.5, 1]);
+		createModel("cylinder", fs, [1, 1, 1, 1], [0, 1.4, 0], [1, 0, -1], [1, 0.5, 1]);
 
-
-		createModel("torus", fs, [1, 1, 1, 1], [0.2, 0.5, -2], [0, 0, 0], [.10, .10, .10]);
-
-		// createModel("ball", fs, [1, 1, 1, 1], [0.2, 0.5, -2], [0, 0, 0], [1, 1, 1]);
-		createModel("cone", fs, [1, 1, 1, 1], [0.2, 0.5, -2], [0, 0, 0], [.10, .10, .10]);
-		createModel("zylinder", fs, [1, 1, 1, 1], [0.2, 0.5, -2], [0, 0, 0], [.10, .10, .10]);
 		// Select one model that can be manipulated interactively by user.
 		interactiveModel = models[0];
 	}
@@ -268,7 +270,7 @@ var app = (function () {
 			}
 			// Camera move and orbit.
 			switch (c) {
-				case ('C'):
+				case ('R'):
 					// Orbit camera.
 					camera.zAngle += sign * deltaRotate;
 					break;

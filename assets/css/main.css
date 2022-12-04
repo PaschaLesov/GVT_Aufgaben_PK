@@ -3689,10 +3689,11 @@ button:disabled,
 
 .exercise5right {
   max-width: 50%;
-  border: 2px solid #5c5c5c;
   padding: 10px;
   color: #638107;
 }
+
+
 
 .five {
   display: flex;

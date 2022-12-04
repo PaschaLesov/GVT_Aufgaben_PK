@@ -1,4 +1,4 @@
-var zylinder = ( function() {
+var cylinder = ( function() {
 
 	function createVertexData() {
 		var scale = 0.25;
