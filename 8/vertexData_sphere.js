@@ -1,4 +1,4 @@
-var ball = ( function() {
+var sphere = ( function() {
 
 	function createVertexData() {
 		var n = 32;
