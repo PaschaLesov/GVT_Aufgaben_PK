@@ -26,9 +26,9 @@ var app = (function() {
         // value for left right top bottom in projection.
         lrtb : 2.0,
         // View matrix.
-        vMatrix : glMatrix.mat4.create(),
+        vMatrix : mat4.create(),
         // Projection matrix.
-        pMatrix : glMatrix.mat4.create(),
+        pMatrix : mat4.create(),
         // Projection types: ortho, perspective, frustum.
         projectionType : "perspective",
         // Angle to Z-Axis for camera when orbiting the center
@@ -40,11 +40,32 @@ var app = (function() {
 
     // Objekt with light sources characteristics in the scene.
     var illumination = {
-        ambientLight : [.5,.5,.5],
-        light : [
-            {isOn:true, position:[3.,1.,3.], color:[1.,1.,1.], zAngle: 0},
-            {isOn:true, position:[-3.,1.,-3.], color:[1.,1.,1.], zAngle: 0},
-        ]
+        ambientLight : [ .5, .5, .5 ],
+        light : [ {
+            isOn : true,
+            position : [ 0., 1., 3. ],
+            color : [ 1., 1., 1. ]
+        }, {
+            isOn : true,
+            position : [ 0., 1., -3. ],
+            color : [ 1., 1., 1. ]
+        }, ]
+    };
+
+    //object to handle the light movement
+    var lightMovement = {
+        direction: 0.,
+        time: 0.,
+        movement: function() { //the time is seted further and according to the time, the light spot is calculated
+            lightMovement.time += lightMovement.direction; 
+            illumination.light[0].position[0] = Math.sin(lightMovement.time) * 3;
+            illumination.light[0].position[2] = Math.cos(lightMovement.time) * 3;
+
+            illumination.light[1].position[0] = Math.sin(lightMovement.time) * -3;
+            illumination.light[1].position[2] = Math.cos(lightMovement.time) * -3;
+
+            render();
+        },
     };
 
     function start() {
@@ -59,6 +80,7 @@ var app = (function() {
         initModels();
         initEventHandler();
         initPipline();
+
     }
 
     function initWebGL() {
@@ -186,21 +208,24 @@ var app = (function() {
         var fs = "fill";
 
         // Create some default material.
-        var mDefault = createPhongMaterial();
-        var mRed = createPhongMaterial({kd:[1.,0.,0.]});
-        var mGreen = createPhongMaterial({kd:[0.,1.,0.]});
-        var mBlue = createPhongMaterial({kd:[0.,0.,1.]});
-        var mWhite = createPhongMaterial({ka:[1.,1.,1.], kd:[.5,.5,.5],
-            ks:[0.,0.,0.]});
+        //var mDefault = createPhongMaterial();
 
-        createModel("torus", fs, [1,1,1,1], [0,.75,0], [0,0,0,0], [1,1,1,1],
-            mRed);
-        createModel("sphere", fs, [1,1,1,1], [-1.25,.5,0], [0,0,0,0], [.5,.5,.5],
-            mGreen);
-        createModel("sphere", fs, [1,1,1,1], [1.25,.5,0], [0,0,0,0], [.5,.5,.5],
-            mBlue);
-        createModel("plane", fs, [1,1,1,1], [0,0,0,0], [0,0,0,0], [1,1,1,1],
-            mWhite);
+        var mTorus = createPhongMaterial({ka: [0.1, 0.0, 0.0], kd: [0.7, 0.03, 0.03]});
+        createModel("torus", fs, [ 1, 1, 1, 1 ], [ 0, .75, 0 ],
+                [ 0, 0, 0, 0 ], [ 1, 1, 1, 1 ], mTorus);
+
+        var mSphere1 = createPhongMaterial({ka: [0.0, 0.1, 0.0], kd: [0.0, 0.7, 0.0]});
+        createModel("sphere", fs, [ 1, 1, 1, 1 ], [ -1.25, .5, 0 ], [ 0, 0,
+                0, 0 ], [ .5, .5, .5 ], mSphere1);
+
+        var mSphere2 = createPhongMaterial({ka: [0.0, 0.0, 0.1], kd: [0.03, 0.03, 0.6]});
+        createModel("sphere", fs, [ 1, 1, 1, 1 ], [ 1.25, .5, 0 ], [ 0, 0,
+                0, 0 ], [ .5, .5, .5 ], mSphere2);
+
+        var mPlane = createPhongMaterial({ka:[0.5,0.5,0.5], kd:[.5,.5,.5],           
+            ks:[0.,0.,0.], ke:-1.});
+        createModel("plane", fs, [ 1, 1, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0,
+                0 ], [ 1, 1, 1, 1 ], mPlane);
 
         // Select one model that can be manipulated interactively by user.
         interactiveModel = models[0];
@@ -234,13 +259,13 @@ var app = (function() {
         model.scale = scale;
 
         // Create and initialize Model-Matrix.
-        model.mMatrix = glMatrix.mat4.create();
+        model.mMatrix = mat4.create();
 
         // Create and initialize Model-View-Matrix.
-        model.mvMatrix = glMatrix.mat4.create();
+        model.mvMatrix = mat4.create();
 
         // Create and initialize Normal Matrix.
-        model.nMatrix = glMatrix.mat3.create();
+        model.nMatrix = mat3.create();
     }
 
     /**
@@ -295,13 +320,15 @@ var app = (function() {
         var deltaTranslate = 0.05;
         var deltaScale = 0.05;
 
+        window.setInterval(lightMovement.movement, 50); //rotation of the light which is recalculated every 50ms 
+
         window.onkeydown = function(evt) {
             var key = evt.which ? evt.which : evt.keyCode;
             var c = String.fromCharCode(key);
             // console.log(evt);
             // Use shift key to change sign.
             var sign = evt.shiftKey ? -1 : 1;
-            // Rotate interactiveModel.
+            // Rotate torus in all axes directions.
             switch (c) {
             case ('X'):
                 interactiveModel.rotate[0] += sign * deltaRotate;
@@ -313,7 +340,7 @@ var app = (function() {
                 interactiveModel.rotate[2] += sign * deltaRotate;
                 break;
             }
-            // Scale/squeese interactiveModel.
+            // Scale/squeese torus with Shift and without.
             switch (c) {
             case ('S'):
                 interactiveModel.scale[0] *= 1 + sign * deltaScale;
@@ -323,15 +350,15 @@ var app = (function() {
             }
             // Change projection of scene.
             switch (c) {
-            case ('O'):
+            case ('O'): //orthogonal
                 camera.projectionType = "ortho";
                 camera.lrtb = 2;
                 break;
-            case ('F'):
+            case ('F'): //frustum
                 camera.projectionType = "frustum";
                 camera.lrtb = 1.2;
                 break;
-            case ('P'):
+            case ('P'): //perspective
                 camera.projectionType = "perspective";
                 break;
             }
@@ -358,13 +385,20 @@ var app = (function() {
                 camera.lrtb += sign * 0.1;
                 break;
             }
-            // Light Sources
+            // Light Movement:
             switch (c) {
                 case ('I'):
-                    illumination.light.forEach(light => light.zAngle -= deltaRotate)
+                    
+                    if (lightMovement.direction < 0) //if the light is moving stop it, in case the key L is pressed before
+                        lightMovement.direction = 0;
+                    else
+                        lightMovement.direction = 0.05;
                     break;
-                case ('L'):
-                    illumination.light.forEach(light => light.zAngle += deltaRotate)
+                case ('L'): 
+                    if (lightMovement.direction > 0) //if the light is moving stop it, in case the key I is pressed before
+                        lightMovement.direction = 0;
+                    else
+                        lightMovement.direction = -0.05;
                     break;
             }
             // Render the scene again on any key pressed.
@@ -379,12 +413,12 @@ var app = (function() {
         // Clear framebuffer and depth-/z-buffer.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        setProjection();
+        setProjection(); //activate the projection matrix
 
-        calculateCameraOrbit();
+        calculateCameraOrbit(); //calculates the orbit of the camera
 
         // Set view matrix depending on camera.
-        glMatrix.mat4.lookAt(camera.vMatrix, camera.eye, camera.center, camera.up);
+        mat4.lookAt(camera.vMatrix, camera.eye, camera.center, camera.up);
 
         // NEW
         // Set light uniforms.
@@ -394,17 +428,12 @@ var app = (function() {
             // bool is transferred as integer.
             gl.uniform1i(prog.lightUniform[j].isOn,
                     illumination.light[j].isOn);
-            // Transform orbit
-            lightSourceOrbit(j);
             // Tranform light postion in eye coordinates.
             // Copy current light position into a new array.
-            var lightPos = [].concat(illumination.light[j].localPosition);
-            console.log('position: ', illumination.light[j].position);
-            console.log('localPosition: ', illumination.light[j].localPosition);
-            console.log('lightPos: ', lightPos);
+            var lightPos = [].concat(illumination.light[j].position);
             // Add homogenious coordinate for transformation.
             lightPos.push(1.0);
-            glMatrix.vec4.transformMat4(lightPos, lightPos, camera.vMatrix);
+            vec4.transformMat4(lightPos, lightPos, camera.vMatrix);
             // Remove homogenious coordinate.
             lightPos.pop();
             gl.uniform3fv(prog.lightUniform[j].position, lightPos);
@@ -446,29 +475,20 @@ var app = (function() {
         camera.eye[z] += camera.distance * Math.cos(camera.zAngle);
     }
 
-    function lightSourceOrbit(i) {
-        // Calculate x,z position/eye of light source orbiting the center.
-        let light = illumination.light[i];
-        let distance = Math.sqrt(light.position[0] * light.position[0] + light.position[1] * light.position[1] + light.position[2] * light.position[2]);
-        light.localPosition = [].concat(light.position);
-        light.localPosition[0] += distance * Math.sin(light.zAngle);
-        light.localPosition[2] += distance * Math.cos(light.zAngle);
-    }
-
     function setProjection() {
         // Set projection Matrix.
         switch (camera.projectionType) {
         case ("ortho"):
             var v = camera.lrtb;
-            glMatrix.mat4.ortho(camera.pMatrix, -v, v, -v, v, -10, 100);
+            mat4.ortho(camera.pMatrix, -v, v, -v, v, -10, 100);
             break;
         case ("frustum"):
             var v = camera.lrtb;
-            glMatrix.mat4.frustum(camera.pMatrix, -v / 2, v / 2, -v / 2, v / 2,
+            mat4.frustum(camera.pMatrix, -v / 2, v / 2, -v / 2, v / 2,
                     1, 10);
             break;
         case ("perspective"):
-            glMatrix.mat4.perspective(camera.pMatrix, camera.fovy, camera.aspect, 1,
+            mat4.perspective(camera.pMatrix, camera.fovy, camera.aspect, 1,
                     10);
             break;
         }
@@ -486,24 +506,24 @@ var app = (function() {
         var mvMatrix = model.mvMatrix;
 
         // Reset matrices to identity.
-        glMatrix.mat4.identity(mMatrix);
-        glMatrix.mat4.identity(mvMatrix);
+        mat4.identity(mMatrix);
+        mat4.identity(mvMatrix);
 
         // Translate.
-        glMatrix.mat4.translate(mMatrix, mMatrix, model.translate);
+        mat4.translate(mMatrix, mMatrix, model.translate);
         // Rotate.
-        glMatrix.mat4.rotateX(mMatrix, mMatrix, model.rotate[0]);
-        glMatrix.mat4.rotateY(mMatrix, mMatrix, model.rotate[1]);
-        glMatrix.mat4.rotateZ(mMatrix, mMatrix, model.rotate[2]);
+        mat4.rotateX(mMatrix, mMatrix, model.rotate[0]);
+        mat4.rotateY(mMatrix, mMatrix, model.rotate[1]);
+        mat4.rotateZ(mMatrix, mMatrix, model.rotate[2]);
         // Scale
-        glMatrix.mat4.scale(mMatrix, mMatrix, model.scale);
+        mat4.scale(mMatrix, mMatrix, model.scale);
 
         // Combine view and model matrix
         // by matrix multiplication to mvMatrix.
-        glMatrix.mat4.multiply(mvMatrix, camera.vMatrix, mMatrix);
+        mat4.multiply(mvMatrix, camera.vMatrix, mMatrix);
 
         // Calculate normal matrix from model matrix.
-        glMatrix.mat3.normalFromMat4(model.nMatrix, mvMatrix);
+        mat3.normalFromMat4(model.nMatrix, mvMatrix);
     }
 
     function draw(model) {

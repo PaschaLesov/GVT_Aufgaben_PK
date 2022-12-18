@@ -1,7 +1,7 @@
 var torus = ( function() {
 
 	function createVertexData() {
-		var n = 16;
+		var n = 32;
 		var m = 32;
 
 		// Positions.
@@ -31,6 +31,7 @@ var torus = ( function() {
 
 				var iVertex = i * (m + 1) + j;
 
+				//set up the coordinates of the Grid line for the perspective recognition
 				var x = (R + r * Math.cos(u) ) * Math.cos(v);
 				var y = (R + r * Math.cos(u) ) * Math.sin(v);
 				var z = r * Math.sin(u);
