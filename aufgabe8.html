@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>GVT PK</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<script type="text/javascript" src="8/gl-matrix.js"></script>
+	<script type="text/javascript" src="8/vertexData_plane.js"></script>
+	<script type="text/javascript" src="8/vertexData_sphere.js"></script>
+	<script type="text/javascript" src="8/vertexData_torus.js"></script>
+	<script type="text/javascript" src="8/BEL_Src_tpl.js"></script>
+	<script type="x-shader/x-vertex" id="vertexshader">
+		attribute vec3 aPosition;
+		attribute vec3 aNormal;
+		
+		uniform mat4 uPMatrix;
+		uniform mat4 uMVMatrix;
+		uniform mat3 uNMatrix;
+		
+		varying vec3 vNormal;
+		varying vec4 vPosition;
+		
+		void main(){
+			// Calculate vertex position in eye coordinates. 
+			vec4 tPosition = uMVMatrix * vec4(aPosition, 1.0);
+			// Calculate projektion.
+			gl_Position = uPMatrix * tPosition;
+		
+			vNormal = normalize(uNMatrix * aNormal);
+			
+			vPosition = tPosition;
+		}
+	</script>
+	<script type="x-shader/x-fragment" id="fragmentshader">
+		precision mediump float;
+		
+		varying vec3 vNormal;
+		varying vec4 vPosition;
+
+		// Ambient light.
+		uniform vec3 ambientLight;
+		
+		// Pointlights.
+		const int MAX_LIGHT_SOURCES = 8;
+		struct LightSource {
+			bool isOn;
+			vec3 position;
+			vec3 color;
+		};
+		uniform LightSource light[MAX_LIGHT_SOURCES];
+		
+		// Material.
+		struct PhongMaterial {
+			vec3 ka;
+			vec3 kd;
+			vec3 ks;
+			float ke; 
+		};
+		uniform PhongMaterial material;
+
+		//calc diffuse light and apply only if a specific threshold is meet
+		vec3 diffuseToon(vec3 n, vec3 s, LightSource l, float thre, float multi) {
+			vec3 result = vec3(0.0);
+			if (max(0.0, dot(n, s)) >= thre) {
+				result = l.color * material.kd * multi;
+			}
+			return result;
+		}
+
+		//find an outline for the object
+		vec3 outlineToon(vec3 v, vec3 n, vec3 s, LightSource l) {
+			vec3 result = vec3(1.0);
+			if (material.ke > 0.0 && dot(v, n) < mix(0.1, 0.4, max(0.0, dot(n, s))))
+			{
+				result = vec3(0.01);
+			}
+			return result;
+		}
+
+		//highlighted spot of reflected lightspot
+		vec3 highlightToon(vec3 n, vec3 s, vec3 v, LightSource l) {
+			vec3 result = vec3(0.0);
+			if (dot(n, s) > 0.0 &&
+				pow(max(0.0, dot(reflect(-s, n), v)), material.ke) > 0.7)
+			{
+				result = material.ks * l.color;
+			}
+			return result;
+		}
+		
+		// Toon illumination for multiple light sources
+		vec3 toon(vec3 p, vec3 n, vec3 v) {
+		
+			// Calculate ambient light.
+			vec3 result = material.ka * ambientLight;
+			
+			// Add light from all light sources.
+			for(int j=0; j < MAX_LIGHT_SOURCES; j++){
+				if(light[j].isOn){
+					//Calc direction of the light
+					vec3 s = normalize(light[j].position - p);
+					//3 steps of diffuse light
+					result = max(result, diffuseToon(n, s, light[j], 0.4, 0.3));
+					result = max(result, diffuseToon(n, s, light[j], 0.6, 0.55));
+					result = max(result, diffuseToon(n, s, light[j], 0.85, 0.8));
+					//calc outline
+					result = min(result, outlineToon(v, n, s, light[j]));
+					//specular light spot
+					result += highlightToon(n, s, v, light[j]);
+				}
+			}
+			return result;
+		}
+		
+		void main() {
+			// Calculate view vector.
+			vec3 v = normalize(-vPosition.xyz);
+
+			// Calculate toon-light
+			vec3 color = toon(vPosition.xyz, normalize(vNormal), v);
+
+			//Gamma-Correction
+			gl_FragColor = vec4( pow(color, vec3(0.4545)), 1.0);;
+		}
+	</script>
+</head>
+
+<body onload="app.start()">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<!-- <header id="header">
+							</header> -->
+
+				<!-- Banner -->
+				<section id="banner">
+					<div class="content">
+						<header>
+							<h1>Exercise 7 Z-Buffer Visualisierung<br /></h1>
+						</header>
+						<p><strong>Aufgabenstellung:</strong> Erweitern Sie die Aufgabe Bel-3 (oder Bel-2 in
+							schwarz-weiß) aus der Lerneinheit BEL (Kap.14.9). Auf einen Tastendruck sollen sich die
+							beiden Lichter in der Szene gleichzeitig auf einer Kreisbahn um die Modelle bewegen. Sie
+							bewegen sich unabhängig von der Kamera (nicht wie ein Licht, das fest auf der Kamera
+							montiert ist).<br>
+							Sie können auch eine andere, eigene Szene gestalten.
+							<p><strong>Interaktion:</strong> Bewegung der Lichter auf Tastendruck 'l' oder 'L' (Shift
+								hat also keinen Effekt).</p>
+					</div>
+				</section>
+				<section>
+					<h1>Christmas is around the corner!</h1>
+				</section>
+				<div class="five">
+					<div class="exercise5left">
+						<canvas id="canvas" width="500" height="500"></canvas>
+					</div>
+					<div class="exercise5right">
+						<h3>Controls:</h3>
+						<h3>
+							R = rotate<br>
+							W = closer<br>
+							S = down<br>
+							A = left<br>
+							D = further
+						</h3>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="index.html">Homepage</a></li>
+						<li><a href="aufgabe1.html">Exercise 1</a></li>
+						<li><a href="aufgabe2.html">Exercise 2</a></li>
+						<li><a href="aufgabe3.html">Exercise 3</a></li>
+						<li><a href="aufgabe4.html">Exercise 4</a></li>
+						<li><a href="aufgabe5.html">Exercise 5</a></li>
+						<li><a href="aufgabe6.html">Exercise 6</a></li>
+						<li><a href="aufgabe7.html">Exercise 7</a></li>
+						<li><a href="aufgabe8.html">Exercise 8</a></li>
+						<li><a href="aufgabe9.html">Exercise 9</a></li>
+						<li><a href="aufgabe10.html">Exercise 10</a></li>
+					</ul>
+				</nav>
+
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a
+							href="https://unsplash.com">Unsplash</a>. </p>
+				</footer>
+
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script>
+
+	</script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
