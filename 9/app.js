@@ -41,11 +41,11 @@ var app = (function () {
 
 	// Objekt with light sources characteristics in the scene.
 	var illumination = {
-		ambientLight: [.5, .5, .5],
+		ambientLight: [1, 1, 1],
 		light: [{
 			isOn: true,
-			position: [3., 0., 5],
-			color: [1., 1., 1.]
+			position: [1, 1., 1],
+			color: [1, 1, 1]
 		}, ]
 	};
 
@@ -77,7 +77,7 @@ var app = (function () {
 	 * thier setup must be in render function.
 	 */
 	function initPipline() {
-		gl.clearColor(.95, .95, .95, 1);
+		gl.clearColor(1, 1, 1, 1);
 
 		// Backface culling.
 		gl.frontFace(gl.CCW);

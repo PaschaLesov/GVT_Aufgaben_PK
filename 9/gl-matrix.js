@@ -5,7 +5,7 @@
  * @version 2.2.0
  */
 
-/* Copyright (c) 2013, Brandon Jones, Colin MacKenzie IV. All rights reserved.
+/* Copyright (c) 2015-2021, Brandon Jones, Colin MacKenzie IV.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
