@@ -107,13 +107,13 @@
 			float distRoundBox(vec2 pos, vec2 size)
 			{
 				vec2 q = abs(pos)-size;
-    			return min(max(q.x,q.y),0.0) + length(max(q,0.0)) - 0.01;
+    			return min(max(q.x,q.y),0.0) + length(max(q,0.0)) - 0.005;
 			}
 
 			//creates donat
 			vec4 procedureGrafics()
 			{
-				if (vTextureCoord.s > 0.05+(0.006*sin(vTextureCoord.t * 100.0)) &&
+				if (vTextureCoord.s > 0.05+(0.006*sin(vTextureCoord.t * 50.0)) &&
 				    vTextureCoord.s < 0.45+(0.003*sin(vTextureCoord.t * 50.0)))
 				{
 					float dist = distRoundBox(vTextureCoord - vec2(0.3, 0.02), vec2(0.001, 0.005));
@@ -137,7 +137,7 @@
 				{
 					return texture2D(uTexture, vTextureCoord);
 					//float flecken = 0.5 + 0.5*sin(vTextureCoord.s * M_PI * 6.0) * cos(vTextureCoord.t * M_PI * 4.0);
-					//return vec4(mix(vec3(0.9, 0.6, 0.2),vec3(0.75, 0.45, 0.05),flecken), 1.0);
+					//return vec4(mix(vec3(1, 1, 1),vec3(1, 1, 1),flecken), 1.0);
 				}
 			}
 			
@@ -152,7 +152,7 @@
 				vec4 tColor = procedureGrafics();
 				vec4 lighting = vec4( phong(vPosition.xyz, vNormal, v), 1.0);
 				// ToDo:
-				gl_FragColor = vec4(pow(vec3(tColor * lighting), vec3(0.4545)), 1.0); //...
+				gl_FragColor = vec4(pow(vec3(tColor * lighting), vec3(1)), 1.0); //...
 			}			
 		</script>
 </head>

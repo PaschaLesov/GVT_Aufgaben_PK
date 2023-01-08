@@ -229,9 +229,6 @@ var app = (function () {
 	}
 
 	function initModels() {
-		// fillstyle
-		var fs = "fill";
-
 		// Create some materials.
 		var mDefault = createPhongMaterial();
 		var mRed = createPhongMaterial({
@@ -254,7 +251,7 @@ var app = (function () {
 			ks: [0, 0, 0]
 		});
 
-		createModel("torus", fs, [1, 1, 1, 1], [0, 0, 0], [-Math.PI / 4.0, 0, 0.], [2, 2, 2], mWhite, "texture.png");
+		createModel("torus", "fill", [0, 0, 0, 0], [0, 0, 0], [-Math.PI / 4.0, 0, 0.], [1, 1, 1], mWhite, "texture.png");
 
 		// Select one model that can be manipulated interactively by user.
 		interactiveModel = models[0];
@@ -365,40 +362,7 @@ var app = (function () {
 			var sign = evt.shiftKey ? -1 : 1;
 
 			// Rotate interactiveModel the base.
-			switch (c) {
-				case ('KeyX'):
-					interactiveModel.rotate[0] += sign * deltaRotate;
-					break;
-				case ('KeyY'):
-					interactiveModel.rotate[1] += sign * deltaRotate;
-					break;
-				case ('KeyZ'):
-					interactiveModel.rotate[2] += sign * deltaRotate;
-					break;
-			}
-			// Scale/squeese interactiveModel.
-			switch (c) {
-				case ('KeyT'):
-					interactiveModel.scale[0] *= 1 + sign * deltaScale;
-					interactiveModel.scale[1] *= 1 - sign * deltaScale;
-					interactiveModel.scale[2] *= 1 + sign * deltaScale;
-					break;
-			}
-			// Change projection of scene.
-			switch (c) {
-				case ('KeyO'): //orthogonal
-					camera.projectionType = "ortho";
-					camera.lrtb = 2;
-					break;
-				case ('KeyF'): //frustum
-					camera.projectionType = "frustum";
-					camera.lrtb = 1.2;
-					break;
-				case ('KeyP'): //perspective
-					camera.projectionType = "perspective";
-					break;
-			}
-			// Camera move and orbit.
+
 			switch (c) {
 				case ('KeyA'):
 					sign *= -1;
@@ -407,36 +371,11 @@ var app = (function () {
 					camera.eye[0] += sign * deltaTranslate;
 					break;
 					// Orbit camera.
-				case ('ArrowLeft'):
-					sign *= -1; //turn Shift
-				case ('ArrowRight'):
-				case ('KeyC'):
-					evt.preventDefault(); //deactivates the browser funktion for the arrow keys
-					camera.zAngle += sign * deltaRotate;
-					camera.overrideX = false;
-					break;
-					// Move camera up and down.
-				case ('ArrowDown'):
 				case ('KeyS'):
 					sign *= -1; //turn Shift
-				case ('ArrowUp'):
 				case ('KeyW'):
-				case ('KeyH'):
 					evt.preventDefault(); //deactivates the browser funktion for the arrow keys
 					camera.eye[1] += sign * deltaTranslate;
-					break;
-					// Camera distance to center.
-				case ('KeyU'):
-					camera.distance += sign * deltaTranslate;
-					camera.overrideX = false;
-					break;
-					// Camera fovy in radian.	
-				case ('KeyV'):
-					camera.fovy += sign * 5 * Math.PI / 180;
-					break;
-					// Camera near plane dimensions.	
-				case ('KeyB'):
-					camera.lrtb += sign * 0.1;
 					break;
 			}
 			// Render the scene again on any key pressed.
