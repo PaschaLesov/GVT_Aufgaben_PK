@@ -197,9 +197,6 @@ var app = (function () {
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
 
 		// Set texture parameter.
-		// Wrap in S and T direction: CLAMP_TO_EDGE, REPEAT, MIRRORED_REPEAT
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
 		// Min Filter: NEAREST,LINEAR, .. , LINEAR_MIPMAP_LINEAR, 
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
 		// Mag Filter: NEAREST,LINEAR
@@ -223,10 +220,10 @@ var app = (function () {
 		material = material || {};
 		// Set some default values,
 		// if not defined in material paramter.
-		material.ka = material.ka || [0.3, 0.3, 0.3];
-		material.kd = material.kd || [0.6, 0.6, 0.6];
+		material.ka = material.ka || [1, 1, 1];
+		material.kd = material.kd || [1, 1, 1];
 		material.ks = material.ks || [0.8, 0.8, 0.8];
-		material.ke = material.ke || 10.;
+		material.ke = material.ke || 1;
 
 		return material;
 	}
