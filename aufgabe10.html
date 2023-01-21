@@ -6,39 +6,75 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
-	<script type="text/javascript" src="7/gl-matrix.js"></script>
-	<script type="text/javascript" src="7/vertexData_plane.js"></script>
-	<script type="text/javascript" src="7/vertexData_sphere.js"></script>
-	<script type="text/javascript" src="7/vertexData_cylinder.js"></script>
-	<script type="text/javascript" src="7/vertexData_cone.js"></script>
-	<script type="text/javascript" src="7/vertexData_torus.js"></script>
-	<script type="text/javascript" src="7/app.js"></script>
-	<script type="x-shader/x-vertex" id="vertexshader">
-		attribute vec3 aPosition;
-		attribute vec3 aNormal;
+	<script src="ext/gl-matrix.js"></script>
+    <script src="10/ext/papaparse.min.js"></script>
 
-		uniform mat4 uPMatrix;
-		uniform mat4 uMVMatrix;
-		uniform mat3 uNMatrix;
-		uniform vec4 uColor;
+    <!--NEW DIM-->
+    <script src="ext/tsne.js"></script>
 
-		varying vec4 vColor;
+    <script src="GVT_Src_vertexData_sphere.js"></script>
 
-		void main(){
-			gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
-			vec3 tNormal = uNMatrix * aNormal;
+    <!--NEW DIM-->
+    <script src="DIM_Src_Data_tpl.js"></script>
+    <script src="DIM_Src_tpl.js"></script>
 
-			vColor = uColor;
-		}
-	</script>
-	<script type="x-shader/x-fragment" id="fragmentshader">
-		precision mediump float;
-		varying vec4 vColor;
+    <script type="x-shader/x-vertex" id="vertexshader">
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
 
-		void main() {
-			gl_FragColor = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1);
-		}
-	</script>
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+			uniform mat3 uNMatrix;
+
+			varying vec3 vNormal;
+
+			void main(){
+				// Calculte vertex position in eye coordinates. 
+				vec4 tPosition = uMVMatrix * vec4(aPosition, 1.0);
+				// Calculate projektion.
+				gl_Position = uPMatrix * tPosition;
+	
+				vec3 tNormal = normalize(uNMatrix * aNormal);
+				tNormal = uNMatrix * aNormal;
+				
+				vNormal = tNormal;
+			}
+
+    </script>
+    <script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+
+			varying vec3 vNormal;
+
+			// Material.
+			struct PhongMaterial {
+				vec3 ka;
+				vec3 kd;
+				vec3 ks;
+				float ke;
+			};
+			uniform PhongMaterial material;
+
+			// Ambient light.
+			uniform vec3 ambientLight;
+
+			vec3 camLight(vec3 n) {
+
+				vec3 ambient = material.ka * ambientLight;
+
+				vec3 s = vec3(0,0,1);
+				float sn = max( dot(s,n), 0.0);
+				vec3 diffuse = material.kd * sn;
+
+				return ambient + diffuse;
+			}
+
+			void main() {
+				vec3 vNormal = normalize(vNormal);
+				gl_FragColor = vec4(camLight(vNormal), 1.0);
+			}
+
+    </script>
 </head>
 
 <body onload="app.start()">
@@ -58,20 +94,22 @@
 				<section id="banner">
 					<div class="content">
 						<header>
-							<h1>Exercise 7 Z-Buffer Visualisierung<br /></h1>
+							<h1>Exercise 10 - Seeds Daten in 3D<br /></h1>
 						</header>
-						<p><strong>Aufgabenstellung:</strong> Erstellen Sie eine Szene aus mindestens drei Grundkörpern
-							die sich gegenseitig überschneiden, die Körper sollen also Schnittvolumen bilden. Stellen
-							Sie den Tiefenbuffer (Z-Buffer), das heißt die Z-Werte der Fragments im Framebuffer, als
-							Graustufen da. Die Fragments, die in Z-Richtung näher an der Kamera sind, sollen dunkler
-							dargestellt werden. In der Szene soll möglichst viel Tiefe erzeugt werden, so dass der
-							Effekt deutlich wird.
-							<p><strong>Interaktion:</strong> Bewegung der Kamera über die Pfeiltasten (oder über die
-								Tasten WASD).</p>
+						<p><strong>Aufgabenstellung:</strong> Stellen Sie die Seeds-Daten (siehe Abschnitt DIM) in 3D
+							dar. Dazu müssen diese mittels t-SNE auf drei Dimensionen reduziert werden. Die drei Klassen
+							sollen möglichst separiert dargestellt werden. Optimieren Sie die t-SNE Parameter
+							entsprechend. Dokumentieren Sie die verwandten t-SNE Einstellungen (Perplexity, Iterationen,
+							etc.).
+
+							Speichern Sie die dimensionsreduzierten Daten in eine Datei. Diese wird in Ihrer Anwendung
+							für die Abgabe automatisch geladen. So können Sie Ihre beste Lösung zeigen und sind nicht
+							vom der zufälligen Initialisierung des t-SNE Algorithmus abhängig.
+							<p><strong>Interaktion:</strong> Navigation durch die Daten wie in NAV.</p>
 					</div>
 				</section>
 				<section>
-					<h1>Christmas is around the corner!</h1>
+					<h1>Seeds Daten</h1>
 				</section>
 				<div class="five">
 					<div class="exercise5left">
@@ -80,11 +118,14 @@
 					<div class="exercise5right">
 						<h3>Controls:</h3>
 						<h3>
-							R = rotate<br>
-							W = closer<br>
+							W = up<br>
 							S = down<br>
 							A = left<br>
-							D = further
+							D = right<br>
+							Z = rotate on Z<br>
+							X = rotate on X<br>
+							C = rotate on Y<br>
+							
 						</h3>
 					</div>
 				</div>
